@@ -12,7 +12,6 @@
           <tbody>
             <tr  v-for="post in $page.props.posts" :key="post.id" @click="navigateToPost(post.id)" class="cursor-pointer hover:bg-gray-100">
                 <Link v-if="post.is_moderated == 1 " :href="route('post.show', { id: post.id })"><td class="border px-4 py-2">{{ post.title }}</td></Link>
-              
             </tr>
           </tbody>
         </table>
