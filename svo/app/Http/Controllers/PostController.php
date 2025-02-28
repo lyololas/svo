@@ -12,9 +12,7 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the posts.
-     */
+
     public function index(Request $request)
     {
         $posts = Post::all();
@@ -23,23 +21,19 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Display a specific post with its comments.
-     */
+
     public function show($id)
-    {
-        $post = Post::findOrFail($id);
-        $comments = $post->comments;
+{
+    $post = Post::findOrFail($id);
+    $comments = $post->comments()->with('user')->get(); 
 
-        return Inertia::render('PostShow', [
-            'post' => $post,
-            'comments' => $comments,
-        ]);
-    }
+    return Inertia::render('PostShow', [
+        'post' => $post,
+        'comments' => $comments,
+    ]);
+}
 
-    /**
-     * Store a newly created post.
-     */
+
     public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
@@ -67,9 +61,7 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
-    /**
-     * Store a new comment for a post.
-     */
+
     public function storeComment(Request $request, $id): RedirectResponse
     {
         $validatedData = $request->validate([
