@@ -16,5 +16,7 @@ Route::get('dashboard', function () {
 #})->name('posts');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
+Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->name('posts.comment.store');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

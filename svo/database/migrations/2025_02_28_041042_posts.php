@@ -15,6 +15,7 @@ return new class extends Migration
             $table->boolean('is_moderated')->default(0);
             $table->integer('likes')->default(0);
             $table->string('title');
+            $table->string('image')->nullable()->after('description');
             $table->longText('description');
             $table->timestamps();
         });
