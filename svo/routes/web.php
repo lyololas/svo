@@ -14,6 +14,7 @@ Route::get('dashboard', function () {
 #Route::get('/posts', [PostController::class, 'index'], function () {
  #   return Inertia::render('Posts');
 #})->name('posts');
-Route::get('/posts', [PostController::class, 'index'])->name('posts');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

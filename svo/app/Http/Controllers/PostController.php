@@ -24,7 +24,7 @@ $post->description = $request->description;
 $post->image = $imagePath;
 $post->user_id = Auth::id();
 $post->save();
-        return redirect(route('posts', absolute: false));
+        return redirect(route('posts.index', absolute: false));
     }
     public function index(Request $request)
 {
@@ -37,6 +37,13 @@ $post->save();
 
     ]);
 
+}
+
+public function show($id) {
+    
+    return Inertia::render('PostShow', [
+        'post' => Post::findOrFail($id)
+    ]);
 }
 
 }
