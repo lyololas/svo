@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router, Link } from '@inertiajs/vue3'; 
+import { Head, router, Link, usePage } from '@inertiajs/vue3'; 
 import { ref, computed } from 'vue';
 import {
     Dialog,
@@ -21,9 +21,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-
 const isDialogOpen = ref(false);
-
+const isAuthDialogOpen = ref(false);
 
 const newPost = ref({
     title: '',
@@ -42,9 +41,10 @@ const { posts } = defineProps<{
     }>;
 }>();
 
+const page = usePage();
+const isAuthenticated = computed(() => !!page.props.auth.user);
 
 const moderatedPosts = computed(() => posts.filter(post => post.is_moderated === 1));
-
 
 const submitPost = async () => {
     const formData = new FormData();
@@ -62,11 +62,18 @@ const submitPost = async () => {
     newPost.value = { title: '', description: '', image: null }; 
 };
 
-
 const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
         newPost.value.image = input.files[0]; 
+    }
+};
+
+const handleCreatePostClick = () => {
+    if (isAuthenticated.value) {
+        isDialogOpen.value = true;
+    } else {
+        isAuthDialogOpen.value = true;
     }
 };
 </script>
@@ -76,10 +83,9 @@ const handleFileChange = (event: Event) => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <Button @click="isDialogOpen = true" class="mb-4">
+            <Button @click="handleCreatePostClick" class="mb-4">
                 Создать новый пост
             </Button>
-
 
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <div 
@@ -91,11 +97,9 @@ const handleFileChange = (event: Event) => {
                         :href="route('post.show', { id: post.id })"
                         class="block w-full h-full"
                     >
-
                         <div v-if="post.image" class="w-full h-full">
                             <img :src="`/storage/${post.image}`" alt="Post Image" class="w-full h-full object-cover" />
                         </div>
-
 
                         <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white">
                             <h2 class="text-lg font-semibold">{{ post.title }}</h2>
@@ -111,7 +115,6 @@ const handleFileChange = (event: Event) => {
             </div>
         </div>
 
-      
         <Dialog v-model:open="isDialogOpen">
             <DialogContent>
                 <DialogHeader>
@@ -121,7 +124,6 @@ const handleFileChange = (event: Event) => {
                     </DialogDescription>
                 </DialogHeader>
 
-             
                 <form @submit.prevent="submitPost" class="space-y-4">
                     <div>
                         <Label for="title">Заголовок</Label>
@@ -139,6 +141,21 @@ const handleFileChange = (event: Event) => {
                         Отправить
                     </Button>
                 </form>
+            </DialogContent>
+        </Dialog>
+
+        <Dialog v-model:open="isAuthDialogOpen">
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Войдите или зарегистрируйтесь</DialogTitle>
+                    <DialogDescription>
+                        Чтобы создать новый пост, пожалуйста, войдите или зарегистрируйтесь.
+                    </DialogDescription>
+                </DialogHeader>
+                <div class="flex justify-end gap-2">
+                    <Button @click="router.visit(route('login'))">Войти</Button>
+                    <Button @click="router.visit(route('register'))">Зарегистрироваться</Button>
+                </div>
             </DialogContent>
         </Dialog>
     </AppLayout>

@@ -35,7 +35,7 @@
                 </div>
                 
                 <h2 class="text-2xl font-semibold mb-4 dark:text-white">Сделать пожертвование</h2>
-                <form @submit.prevent="submitDonation" class="space-y-4">
+                <form @submit.prevent="handleDonation" class="space-y-4">
                     <div>
                         <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Сумма (в рублях)
@@ -70,14 +70,38 @@
                 </div>
             </div>
         </div>
+
+        <!-- Dialog for unauthenticated users -->
+        <Dialog v-model:open="isAuthDialogOpen">
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Войдите или зарегистрируйтесь</DialogTitle>
+                    <DialogDescription>
+                        Чтобы сделать пожертвование, пожалуйста, войдите или зарегистрируйтесь.
+                    </DialogDescription>
+                </DialogHeader>
+                <div class="flex justify-end gap-2">
+                    <Button @click="router.visit(route('login'))">Войти</Button>
+                    <Button @click="router.visit(route('register'))">Зарегистрироваться</Button>
+                </div>
+            </DialogContent>
+        </Dialog>
     </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { type BreadcrumbItem } from '@/types';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog'; // Ensure this path is correct
+import { Button } from '@/components/ui/button'; // Ensure this path is correct
 
 interface Charity {
     id: number;
@@ -90,20 +114,17 @@ interface Charity {
 }
 
 const props = defineProps<{
-
-charity: {
-    id: number;
-    name: string;
-    goal_amount: number;
-    raised_amount: number;
-    start_date: string;
-    end_date: string;
-};
-
-user: {
-    coins: number;
-};
-
+    charity: {
+        id: number;
+        name: string;
+        goal_amount: number;
+        raised_amount: number;
+        start_date: string;
+        end_date: string;
+    };
+    user: {
+        coins: number;
+    };
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -114,6 +135,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 const donationAmount = ref<number>(0);
 const now = ref<Date>(new Date());
 const isSubmitting = ref(false);
+const isAuthDialogOpen = ref(false); // Control the visibility of the auth dialog
+const page = usePage();
+const isAuthenticated = computed(() => !!page.props.auth.user); // Check if user is authenticated
+
 let timerId: number;
 
 const isActive = computed(() => {
@@ -179,20 +204,42 @@ onMounted(() => {
     timerId = window.setInterval(() => {
         now.value = new Date();
     }, 1000);
+
+    // Show the auth dialog if the user is not authenticated
+    if (!isAuthenticated.value) {
+        isAuthDialogOpen.value = true;
+    }
 });
 
 onUnmounted(() => {
     clearInterval(timerId);
 });
-const submitDonation = () => {
-router.post(`/charity/${props.charity.id}/donate`, {
-    amount: donationAmount.value
-}, {
-    preserveScroll: true,
-    onSuccess: () => {
-        donationAmount.value = 0;
-    }
-});
 
+const handleDonation = () => {
+    if (!isAuthenticated.value) {
+        // If the user is not authenticated, show the auth dialog
+        isAuthDialogOpen.value = true;
+        return;
+    }
+
+    // If the user is authenticated, proceed with the donation
+    submitDonation();
+};
+
+const submitDonation = () => {
+    isSubmitting.value = true;
+
+    router.post(`/charity/${props.charity.id}/donate`, {
+        amount: donationAmount.value
+    }, {
+        preserveScroll: true,
+        onSuccess: () => {
+            donationAmount.value = 0;
+            isSubmitting.value = false;
+        },
+        onError: () => {
+            isSubmitting.value = false;
+        }
+    });
 };
 </script>
