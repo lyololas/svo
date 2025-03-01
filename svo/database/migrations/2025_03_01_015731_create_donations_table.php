@@ -6,23 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-    public function up(): void
+    /**
+     * Run the migrations.
+     */
+    public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_moderated')->default(0);
-            $table->integer('likes')->default(0);
-            $table->string('title');
-            $table->longText('description');
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
     }
 
-
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('donations');
     }
 };

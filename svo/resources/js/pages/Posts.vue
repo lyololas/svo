@@ -132,11 +132,11 @@ const handleFileChange = (event: Event) => {
                         <Input id="description" v-model="newPost.description" placeholder="Опишите" required />
                     </div>
                     <div>
-                        <Label for="image">Изображение(не обязательно)</Label>
+                        <Label for="image">Изображение</Label>
                         <Input id="image" type="file" @change="handleFileChange" accept="image/*" />
                     </div>
                     <Button type="submit" class="w-full">
-                        Submit
+                        Отправить
                     </Button>
                 </form>
             </DialogContent>

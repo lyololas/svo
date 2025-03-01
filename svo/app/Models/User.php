@@ -19,6 +19,14 @@ class User extends Authenticatable
     public function comments() {
         return $this->hasMany(Comments::class);
     }
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+    public function quizzes()
+{
+    return $this->belongsToMany(Quiz::class)->withPivot('completed_at');
+}
 
 
     use CrudTrait;

@@ -6,23 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('quiz_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_moderated')->default(0);
-            $table->integer('likes')->default(0);
-            $table->string('title');
-            $table->longText('description');
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
 
-
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('quiz_user');
     }
 };
