@@ -3,8 +3,6 @@
     <AppLayout :breadcrumbs="breadcrumbs">
         <div v-if="charities.data.length > 0" class="container mx-auto p-6 dark:bg-gray-900 dark:text-white">
             <h1 class="text-4xl font-bold text-center mb-8">Благотворительности</h1>
-
-            <!-- Grid Layout for Charities (3 per row) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="charity in charities.data" :key="charity.id" class="p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
                     <h2 class="text-2xl font-semibold mb-4">{{ charity.name }}</h2>
@@ -19,7 +17,6 @@
                     </div>
                     <p class="text-lg font-semibold mt-4">Статус: {{ charity.status }}</p>
                     
-                    <!-- Donation Button -->
                     <div class="flex gap-2 mt-4">
         <button
             @click="handleDetails(charity)"
@@ -32,7 +29,6 @@
                 </div>
             </div>
 
-            <!-- Pagination Controls -->
             <div class="flex justify-center mt-8">
                 <button
                     @click="fetchCharities(charities.prev_page_url)"
@@ -54,13 +50,12 @@
             </div>
         </div>
 
-        <!-- Display message if no charity is available -->
+
         <div v-else class="container mx-auto p-6 dark:bg-gray-900 dark:text-white">
             <h1 class="text-4xl font-bold text-center mb-8">Благотворительности недоступны</h1>
             <p class="text-center text-xl">В данный момент нет доступных благотворительных мероприятий.</p>
         </div>
 
-        <!-- Dialog for unauthenticated users -->
         <Dialog v-model:open="isAuthDialogOpen">
             <DialogContent>
                 <DialogHeader>
@@ -156,15 +151,15 @@ const props = defineProps<{
 }>();
 
 
-const isAuthDialogOpen = ref(false); // Control the visibility of the auth dialog
-const isDetailsDialogOpen = ref(false); // Control the visibility of the details dialog
-const selectedCharity = ref<Charity | null>(null); // Currently selected charity for details dialog
-const donationAmount = ref(0); // Donation amount input
-const donationError = ref(''); // Error message for donation
-const isSubmitting = ref(false); // Loading state for donation submission
+const isAuthDialogOpen = ref(false); 
+const isDetailsDialogOpen = ref(false); 
+const selectedCharity = ref<Charity | null>(null); 
+const donationAmount = ref(0); 
+const donationError = ref(''); 
+const isSubmitting = ref(false); 
 
 const page = usePage();
-const isAuthenticated = computed(() => !!page.props.auth.user); // Check if user is authenticated
+const isAuthenticated = computed(() => !!page.props.auth.user);
 
 const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('ru-RU', {
@@ -201,7 +196,6 @@ const handleDetails = (charity: Charity) => {
 
 const handleDonation = async (charityId?: number) => {
     if (!isAuthenticated.value) {
-        // If the user is not authenticated, show the auth dialog
         isAuthDialogOpen.value = true;
         return;
     }
@@ -233,7 +227,6 @@ const handleDonation = async (charityId?: number) => {
 };
 
 onMounted(() => {
-    // Show the auth dialog if the user is not authenticated
     if (!isAuthenticated.value) {
         isAuthDialogOpen.value = true;
     }

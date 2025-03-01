@@ -27,6 +27,10 @@ class User extends Authenticatable
 {
     return $this->belongsToMany(Quiz::class)->withPivot('completed_at');
 }
+public function purchasedItems()
+{
+    return $this->hasMany(PurchasedItem::class);
+}
 
 
     use CrudTrait;

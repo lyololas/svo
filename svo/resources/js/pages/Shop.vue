@@ -11,8 +11,13 @@
                 </p>
             </div>
 
+            <!-- Check if shop is empty -->
+            <div v-if="shopItems.length === 0" class="text-center">
+                <h2 class="text-2xl font-semibold dark:text-white">Магазин пуст на данный момент.</h2>
+            </div>
+
             <!-- Shop items grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div
                     v-for="item in shopItems"
                     :key="item.id"
@@ -37,9 +42,28 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Purchased Items Section -->
+            <div v-if="purchasedItems.length > 0" class="mt-12">
+                <h2 class="text-3xl font-bold text-center mb-8">Купленные товары</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        v-for="purchasedItem in purchasedItems"
+                        :key="purchasedItem.id"
+                        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+                    >
+                        <h2 class="text-2xl font-semibold mb-4 dark:text-white">{{ purchasedItem.name }}</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            {{ purchasedItem.description }}
+                        </p>
+                        <p class="text-lg font-semibold mb-4 dark:text-white">
+                            Код: <span class="text-green-500">{{ purchasedItem.code }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Dialog for unauthenticated users -->
         <Dialog v-model:open="isAuthDialogOpen">
             <DialogContent>
                 <DialogHeader>
@@ -68,9 +92,9 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
-} from '@/components/ui/dialog'; // Ensure this path is correct
-import { Button } from '@/components/ui/button'; // Ensure this path is correct
-
+} from '@/components/ui/dialog'; 
+import { Button } from '@/components/ui/button'; 
+import axios from 'axios';
 const props = defineProps({
     user: {
         type: Object,
@@ -90,10 +114,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const page = usePage();
-const isAuthenticated = computed(() => !!page.props.auth.user); // Check if user is authenticated
-const isAuthDialogOpen = ref(false); // Control the visibility of the auth dialog
+const isAuthenticated = computed(() => !!page.props.auth.user); 
+const isAuthDialogOpen = ref(false); 
+const purchasedItems = ref([]);
 
-// Show the auth dialog when the page loads if the user is not authenticated
 onMounted(() => {
     if (!isAuthenticated.value) {
         isAuthDialogOpen.value = true;
@@ -102,12 +126,12 @@ onMounted(() => {
 
 const handlePurchase = (item) => {
     if (!isAuthenticated.value) {
-        // If the user is not authenticated, show the auth dialog
+
         isAuthDialogOpen.value = true;
         return;
     }
 
-    // If the user is authenticated, proceed with the purchase
+   
     purchaseItem(item);
 };
 
@@ -128,9 +152,15 @@ const purchaseItem = async (item) => {
         });
 
         if (response.data.success) {
-            // Update user coins and item stock
+     
             props.user.coins -= item.price;
             item.stocks -= 1;
+
+           
+            purchasedItems.value.push({
+                ...item,
+                code: response.data.code,
+            });
 
             // Show success message with the code
             alert(`Покупка успешна! Ваш код: ${response.data.code}`);
@@ -142,4 +172,4 @@ const purchaseItem = async (item) => {
         alert('Произошла ошибка. Попробуйте снова.');
     }
 };
-</script>   
+</script>

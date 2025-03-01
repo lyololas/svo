@@ -11,12 +11,17 @@
                             Вопрос {{ index + 1 }}: {{ question.question_text }}
                         </h3>
 
-                        
+                        <!-- Display Question Image -->
+                        <div v-if="question.image" class="mb-4">
+                            <img :src="`/storage/${question.image}`" alt="Question Image" class="w-full h-auto rounded-lg" />
+                        </div>
+
+                        <!-- Display Answers -->
                         <div v-if="question.answers && question.answers.length > 0">
                             <div v-for="answer in question.answers" :key="answer.id" class="mb-2">
                                 <label class="flex items-center">
                                     <input
-                                        type="radio"
+                                        type="checkbox"
                                         :name="`question-${question.id}`"
                                         :value="answer.id"
                                         v-model="selectedAnswers[question.id]"
@@ -54,15 +59,23 @@ const props = defineProps({
     },
 });
 
+// Initialize selectedAnswers as an object with question IDs as keys and arrays as values
 const selectedAnswers = ref({});
 
+// Ensure each question's selected answers are stored as an array
+const initializeSelectedAnswers = () => {
+    props.quiz.questions.forEach((question) => {
+        selectedAnswers.value[question.id] = [];
+    });
+};
+
+// Call the initialization function when the component is mounted
+initializeSelectedAnswers();
 
 const submit = () => {
     const payload = {
         answers: selectedAnswers.value,
     };
-
-    console.log('Payload:', payload); 
 
     useForm(payload).post(`/quizzes/${props.quiz.id}/complete`);
 };

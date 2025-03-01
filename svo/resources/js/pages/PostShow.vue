@@ -1,7 +1,6 @@
 <template>
     <Head title="Posts" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <!-- Post Details Section -->
         <div class="bg-white p-6 rounded-lg shadow-md mb-6">
             <h1 class="text-2xl font-bold mb-2">{{ post.title }}</h1>
             <p class="text-gray-600 mb-4">{{ post.description }}</p>
@@ -9,18 +8,16 @@
                 <span class="mr-4">Theme: {{ post.theme }}</span>
                 <span>Posted on: {{ new Date(post.created_at).toLocaleDateString() }}</span>
             </div>
-
-            <!-- Post Image (Conditional Rendering) -->
             <div v-if="post.image" class="mt-4">
                 <img :src="`/storage/${post.image}`" alt="Post Image" class="w-full h-auto rounded-lg" />
             </div>
         </div>
 
-        <!-- Comments Section -->
+
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-xl font-semibold mb-4">Comments</h2>
 
-            <!-- Comments List -->
+ 
             <div class="space-y-4">
                 <div v-for="comment in comments" :key="comment.id" class="flex items-start space-x-4">
                     <div class="flex-shrink-0">
@@ -40,7 +37,7 @@
                 </div>
             </div>
 
-            <!-- Comment Form -->
+
             <form @submit.prevent="handleAddComment" class="mt-6">
                 <textarea
                     v-model="newComment"
@@ -57,7 +54,6 @@
             </form>
         </div>
 
-        <!-- Auth Dialog -->
         <Dialog v-model:open="isAuthDialogOpen">
             <DialogContent>
                 <DialogHeader>
@@ -86,11 +82,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
-} from '@/components/ui/dialog'; // Ensure this path is correct
-import { Button } from '@/components/ui/button'; // Ensure this path is correct
+} from '@/components/ui/dialog'; 
+import { Button } from '@/components/ui/button'; 
 
 const props = defineProps({
-    post: Object, // The post object
+    post: Object, 
     comments: Array<{
         id: number;
         content: string;

@@ -15,4 +15,8 @@ class ShopItem extends Model
         'price',
         'stocks',
     ];
+    public function purchasedItems()
+{
+    return $this->hasMany(PurchasedItem::class);
+}
 }

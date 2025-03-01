@@ -37,7 +37,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
     Route::post('/quizzes', [QuizController::class, 'store'])->name('quizzes.store');
 });
-
+Route::get('/news', function () {
+    return Inertia::render('News/Index');
+})->name('news');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';
