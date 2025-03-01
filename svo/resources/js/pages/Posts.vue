@@ -86,25 +86,29 @@ const handleCreatePostClick = () => {
             <Button @click="handleCreatePostClick" class="mb-4">
                 Создать новый пост
             </Button>
-
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+            <h1 class="text-4xl">СТАТЬИ</h1>
+            <!-- Updated grid layout to display only 1 post per row -->
+            <div class="grid auto-rows-min gap-4mt-5 w-2/3">
                 <div 
                     v-for="post in moderatedPosts" 
                     :key="post.id" 
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
+                    class="bg-white mt-5 relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
                     <Link 
                         :href="route('post.show', { id: post.id })"
                         class="block w-full h-full"
                     >
-                        <div v-if="post.image" class="w-full h-full">
+                        <div v-if="post.image" class="w-full h-48">
                             <img :src="`/storage/${post.image}`" alt="Post Image" class="w-full h-full object-cover" />
                         </div>
 
-                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white">
+                        <div class="p-4">
                             <h2 class="text-lg font-semibold">{{ post.title }}</h2>
-                            <p class="text-sm">{{ post.description }}</p>
-                            <p class="text-xs text-gray-300">{{ new Date(post.created_at).toLocaleDateString() }}</p>
+                            <p class="text-sm text-gray-500">{{ new Date(post.created_at).toLocaleDateString() }}</p>
+                            <p class="text-sm mt-2">{{ post.description }}</p>
+                            <button class="bg-[#B71C1C] text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-800 transition-colors">
+                                Подробнее
+                            </button>
                         </div>
                     </Link>
                 </div>

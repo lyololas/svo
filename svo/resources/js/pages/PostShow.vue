@@ -1,33 +1,63 @@
 <template>
     <Head title="Posts" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div>{{ $page.props.post.description }}</div>
+        <!-- Post Details Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h1 class="text-2xl font-bold mb-2">{{ post.title }}</h1>
+            <p class="text-gray-600 mb-4">{{ post.description }}</p>
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="mr-4">Theme: {{ post.theme }}</span>
+                <span>Posted on: {{ new Date(post.created_at).toLocaleDateString() }}</span>
+            </div>
 
-        <table class="w-full">
-            <tr v-for="comment in comments" :key="comment.id" class="cursor-pointer hover:bg-gray-100">
-                <td class="border px-4 py-2">
-                    <span class="font-semibold">{{ comment.user.name }}</span>: {{ comment.content }}
-                </td>
-            </tr>
-        </table>
+            <!-- Post Image (Conditional Rendering) -->
+            <div v-if="post.image" class="mt-4">
+                <img :src="`/storage/${post.image}`" alt="Post Image" class="w-full h-auto rounded-lg" />
+            </div>
+        </div>
 
-        <!-- Comment Form -->
-        <form @submit.prevent="handleAddComment" class="mt-4">
-            <textarea
-                v-model="newComment"
-                placeholder="коммент"
-                class="w-full p-2 border rounded"
-                
-            ></textarea>
-            <button
-                type="submit"
-                class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                
-            >
-                Отправить
-            </button>
-        </form>
+        <!-- Comments Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Comments</h2>
 
+            <!-- Comments List -->
+            <div class="space-y-4">
+                <div v-for="comment in comments" :key="comment.id" class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
+                            <span class="text-gray-600">{{ comment.user.name.charAt(0) }}</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="font-semibold">{{ comment.user.name }}</span>
+                            <p class="text-gray-700 mt-1">{{ comment.content }}</p>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-2">
+                            {{ new Date(comment.created_at).toLocaleDateString() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comment Form -->
+            <form @submit.prevent="handleAddComment" class="mt-6">
+                <textarea
+                    v-model="newComment"
+                    placeholder="Write your comment..."
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="3"
+                ></textarea>
+                <button
+                    type="submit"
+                    class="mt-3 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                    Отправить
+                </button>
+            </form>
+        </div>
+
+        <!-- Auth Dialog -->
         <Dialog v-model:open="isAuthDialogOpen">
             <DialogContent>
                 <DialogHeader>
@@ -49,7 +79,7 @@
 import { ref } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import {
     Dialog,
     DialogContent,
@@ -64,6 +94,7 @@ const props = defineProps({
     comments: Array<{
         id: number;
         content: string;
+        created_at: string;
         user: {
             name: string;
         };
@@ -79,9 +110,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const newComment = ref('');
 const isAuthDialogOpen = ref(false);
+const page = usePage();
 
 const handleAddComment = () => {
-    if (!$page.props.auth.user) {
+    if (!page.props.auth.user) {
         isAuthDialogOpen.value = true;
         return;
     }

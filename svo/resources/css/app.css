@@ -2,12 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
-html {
-    --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+@font-face {
+    font-family: 'SF Pro';
+    src: url('/fonts/SF-Pro.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
 }
 
+@font-face {
+    font-family: 'SF Pro';
+    src: url('/fonts/SF-Pro.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'SF Pro', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'SF Pro', sans-serif;
+    font-weight: 700;
+}
 @layer base {
     :root {
         --background: 0 0% 100%;

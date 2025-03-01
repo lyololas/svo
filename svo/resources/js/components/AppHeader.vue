@@ -36,63 +36,55 @@ const isCurrentRoute = (url: string) => {
     return page.url === url;
 };
 
-const activeItemStyles = computed(() => (url: string) => (isCurrentRoute(url) ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''));
+const activeItemStyles = computed(() => (url: string) => (isCurrentRoute(url) ? 'text-[#B71C1C] text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''));
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Главная',
         href: '/dashboard',
-        icon: Home,
     },
     {
-        title: 'Посты',
+        title: 'Форум',
         href: '/posts',
-        icon: ClipboardList,
+    },
+    {
+        title: 'Сборы',
+        href: '/charity',
     },
     {
         title: 'Магазин',
         href: '/shop',
-        icon: Gift,
     },
     {
-        title: 'Викторины',
+        title: 'Историческая справа',
         href: '/quizzes',
-        icon: LayoutGrid,
     },
-    {
-        title: 'Благотворительность',
-        href: '/charity',
-        icon: Heart,
-    },
+    
 ];
 
 const rightNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: '/history',
         icon: Folder,
     },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
+
 ];
 </script>
 
 <template>
-    <div>
+    <div class="bg-white">
         <div class="border-b border-sidebar-border/80">
-            <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+            <div class="mx-auto flex h-20 items-center px-4 max-w-7xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
                     <Sheet>
                         <SheetTrigger :as-child="true">
                             <Button variant="ghost" size="icon" class="mr-2 h-9 w-9">
-                                <Menu class="h-5 w-5" />
+                                <Menu class="h-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-[300px] p-6">
+                        <SheetContent side="left" class="p-6">
                             <SheetTitle class="sr-only">Navigation Menu</SheetTitle>
                             <SheetHeader class="flex justify-start text-left">
                                 <AppLogoIcon class="size-6 fill-current text-black dark:text-white" />
@@ -128,8 +120,8 @@ const rightNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="route('dashboard')" class="flex items-center gap-x-2">
-                    VEKTOR
+                <Link :href="route('dashboard')" class="flex items-center gap-x-2 ml-1">
+                    <img src="img/Icon.svg" alt="">
                 </Link>
 
                 <!-- Desktop Menu -->
