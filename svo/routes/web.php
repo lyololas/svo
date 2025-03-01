@@ -20,3 +20,6 @@ Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+Route::get('/charity', function () {
+    return Inertia::render('CharityView');
+})->name('charity');
