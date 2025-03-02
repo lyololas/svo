@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_moderated')->default(0);
+            $table->string('image')->nullable()->after('description');
             $table->integer('likes')->default(0);
             $table->string('title');
             $table->longText('description');
