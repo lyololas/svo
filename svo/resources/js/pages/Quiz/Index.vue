@@ -2,32 +2,48 @@
     <Head title="Quizzes" />
     <AppLayout>
         <div class="container mx-auto p-6">
-            <h1 class="text-4xl font-bold mb-4">Викторины</h1>
-            <Link v-if="isAuthenticated" href="/quizzes/create" class="btn btn-primary">Создать новый викторину</Link>
-            <div class="mt-6">
+            <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Викторины</h1>
+            
+
+           
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <table class="min-w-full">
-                    <thead>
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-4 py-2">Заголовок</th>
-                            <th class="px-4 py-2">Краткое описание</th>
-                            <th class="px-4 py-2">Награда(в монетах)</th>
-                            <th class="px-4 py-2">Пройти</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                Заголовок
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                Краткое описание
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                Награда (в монетах)
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                Действие
+                            </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="quiz in quizzes" :key="quiz.id">
-                            <td class="border px-4 py-2">{{ quiz.title }}</td>
-                            <td class="border px-4 py-2">{{ quiz.description }}</td>
-                            <td class="border px-4 py-2">{{ quiz.reward_coins }}</td>
-                            <td class="border px-4 py-2">
+                    <tbody class="divide-y divide-gray-200">
+                        <tr v-for="quiz in quizzes" :key="quiz.id" class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 text-sm text-gray-800 font-medium">
+                                {{ quiz.title }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                {{ quiz.description }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                {{ quiz.reward_coins }} 🪙
+                            </td>
+                            <td class="px-6 py-4 text-sm">
                                 <button
                                     v-if="!completedQuizIds.includes(quiz.id)"
                                     @click="handleTakeQuiz(quiz.id)"
-                                    class="btn btn-success"
+                                    class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors"
                                 >
                                     Пройти квиз
                                 </button>
-                                <span v-else class="text-green-600 font-bold">Пройдено!</span>
+                                <span v-else class="text-green-600 font-bold">Пройдено! 🎉</span>
                             </td>
                         </tr>
                     </tbody>
@@ -35,18 +51,30 @@
             </div>
         </div>
 
-        <!-- Dialog for unauthenticated users -->
+     
         <Dialog v-model:open="isAuthDialogOpen">
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Войдите или зарегистрируйтесь</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle class="text-xl font-bold text-gray-800">
+                        Войдите или зарегистрируйтесь
+                    </DialogTitle>
+                    <DialogDescription class="text-gray-600">
                         Чтобы пройти викторину, пожалуйста, войдите или зарегистрируйтесь.
                     </DialogDescription>
                 </DialogHeader>
-                <div class="flex justify-end gap-2">
-                    <Button @click="router.visit(route('login'))">Войти</Button>
-                    <Button @click="router.visit(route('register'))">Зарегистрироваться</Button>
+                <div class="flex justify-end gap-2 mt-4">
+                    <Button
+                        @click="router.visit(route('login'))"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        Войти
+                    </Button>
+                    <Button
+                        @click="router.visit(route('register'))"
+                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                        Зарегистрироваться
+                    </Button>
                 </div>
             </DialogContent>
         </Dialog>
@@ -63,8 +91,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
-} from '@/components/ui/dialog'; // Ensure this path is correct
-import { Button } from '@/components/ui/button'; // Ensure this path is correct
+} from '@/components/ui/dialog'; 
+import { Button } from '@/components/ui/button'; 
 
 const props = defineProps({
     quizzes: {
@@ -78,10 +106,10 @@ const props = defineProps({
 });
 
 const page = usePage();
-const isAuthenticated = computed(() => !!page.props.auth.user); // Check if user is authenticated
-const isAuthDialogOpen = ref(false); // Control the visibility of the auth dialog
+const isAuthenticated = computed(() => !!page.props.auth.user); 
+const isAuthDialogOpen = ref(false); 
 
-// Show the auth dialog when the page loads if the user is not authenticated
+
 onMounted(() => {
     if (!isAuthenticated.value) {
         isAuthDialogOpen.value = true;
@@ -90,7 +118,6 @@ onMounted(() => {
 
 const handleTakeQuiz = (quizId) => {
     if (!isAuthenticated.value) {
-        
         isAuthDialogOpen.value = true;
         return;
     }

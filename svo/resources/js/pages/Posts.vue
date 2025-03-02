@@ -87,7 +87,6 @@ const handleCreatePostClick = () => {
                 Создать новый пост
             </Button>
             <h1 class="text-4xl">СТАТЬИ</h1>
-            <!-- Updated grid layout to display only 1 post per row -->
             <div class="grid auto-rows-min gap-4mt-5 w-2/3">
                 <div 
                     v-for="post in moderatedPosts" 

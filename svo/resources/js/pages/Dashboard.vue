@@ -2,7 +2,6 @@
     <Head title="ВОИН - Военно-спортивная подготовка" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#F7F7F8]">
-            <!-- Hero Section -->
             <div class="h-96 w-full flex items-center justify-between">
                 <div class="w-1/2">
                     <h1 class="text-3xl font-bold mb-4">ВЕКТОР - САЙТ ДЛЯ ПАТРИОТИЧЕСКОГО ВОСПИТАНИЯ МОЛОДЕЖИ</h1>
@@ -19,50 +18,19 @@
                 </div>
             </div>
 
-            <!-- News Section -->
             <div class="w-full py-12">
                 <div class="max-w-7xl mx-auto px-4">
                     <h2 class="text-3xl font-bold text-left mb-8">НОВОСТИ</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <!-- News Item 1 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-semibold mb-2">ВОЕННЫЙ РФ СПАС РАНЕНЫХ ТОВАРИЩЕЙ ПОД ОБСТРЕЛОМ ВСУ</h3>
+                        <div
+                            v-for="newsItem in newsItems"
+                            :key="newsItem.id"
+                            class="bg-white p-6 rounded-lg shadow-md"
+                        >
+                            <h3 class="text-xl font-semibold mb-2">{{ newsItem.title }}</h3>
                             <div class="flex items-center text-sm text-gray-500 mb-4">
-                                <span class="mr-2">Игорь Недорозов</span>
-                                <span>•</span>
-                                <span class="ml-2">27.02.2025</span>
-                            </div>
-                            <button
-                                @click="router.visit(route('news'))"
-                                class="bg-[#B71C1C] text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-800 transition-colors"
-                            >
-                                Подробнее
-                            </button>
-                        </div>
-
-                        <!-- News Item 2 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-semibold mb-2">СПЕЦНАЗОВЦЫ ИЗ ЗОНЫ СВО ПОБЛАГОДАРИЛИ ОРЛОВЦЕВ ЗА ПОМОЩЬ</h3>
-                            <div class="flex items-center text-sm text-gray-500 mb-4">
-                                <span class="mr-2">Ариан Бурцев</span>
-                                <span>•</span>
-                                <span class="ml-2">21.02.2025</span>
-                            </div>
-                            <button
-                                @click="router.visit(route('news'))"
-                                class="bg-[#B71C1C] text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-800 transition-colors"
-                            >
-                                Подробнее
-                            </button>
-                        </div>
-
-                        <!-- News Item 3 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-semibold mb-2">ГЕНШТАБ ВСУ ПРИЗНАЛ НАСТУПЛЕНИЕ АРМИИ РФ НА ХЕРСОНСКОМ НАПРАВЛЕНИИ</h3>
-                            <div class="flex items-center text-sm text-gray-500 mb-4">
-                                <span class="mr-2">Бгор Веселов</span>
-                                <span>•</span>
-                                <span class="ml-2">27.02.2025</span>
+                                <span class="mr-2">{{ newsItem.author }}</span>
+                                <span class="ml-2">{{ newsItem.description }}</span>
                             </div>
                             <button
                                 @click="router.visit(route('news'))"
@@ -75,12 +43,10 @@
                 </div>
             </div>
 
-            <!-- Why VOIN Section -->
             <div class="w-full py-12">
                 <div class="max-w-7xl mx-auto px-4">
                     <h2 class="text-3xl font-bold text-left mb-8">ПОЧЕМУ ВОИН?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <!-- Professional Instructors -->
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <h3 class="text-xl font-semibold mb-4">ПРОФЕССИОНАЛЬНЫЕ ИНСТРУКТОРЫ</h3>
                             <p class="text-gray-700">
@@ -88,7 +54,6 @@
                             </p>
                         </div>
 
-                        <!-- Technical Equipment -->
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <h3 class="text-xl font-semibold mb-4">ТЕХНИЧЕСКОЕ ОСНАЩЕНИЕ</h3>
                             <p class="text-gray-700">
@@ -96,7 +61,6 @@
                             </p>
                         </div>
 
-                        <!-- Physical Improvement -->
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <h3 class="text-xl font-semibold mb-4">УЛУЧШЕНИЕ ФИЗИЧЕСКОЙ ФОРМЫ</h3>
                             <p class="text-gray-700">
@@ -107,12 +71,11 @@
                 </div>
             </div>
 
-            <!-- Reviews Section -->
             <div class="w-full py-12">
                 <div class="max-w-7xl mx-auto px-4">
                     <h2 class="text-3xl font-bold text-center mb-8">ОТЗЫВЫ</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Review 1 -->
+                   
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-xl font-semibold">Найти Прыгнов</h3>
@@ -129,7 +92,6 @@
                             </p>
                         </div>
 
-                        <!-- Review 2 -->
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-xl font-semibold">Взял Иванов</h3>
@@ -146,7 +108,7 @@
                             </p>
                         </div>
 
-                        <!-- Review 3 -->
+                    
                         <div class="bg-white p-6 rounded-lg shadow-md">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-xl font-semibold">Свет Петров</h3>
@@ -166,7 +128,7 @@
                 </div>
             </div>
 
-            <!-- Questions Section -->
+        
             <div class="w-full py-12 bg-white">
                 <div class="max-w-7xl mx-auto px-4">
                     <h2 class="text-3xl font-bold text-center mb-8">ОСТАЛИСЬ ВОПРОСЫ?</h2>
@@ -175,25 +137,25 @@
                     </div>
                     <form class="max-w-4xl mx-auto">
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <!-- Name Input -->
+                       
                             <input
                                 type="text"
                                 placeholder="Имя"
                                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            <!-- Email Input -->
+               
                             <input
                                 type="email"
                                 placeholder="Почта"
                                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            <!-- Phone Input -->
+                 
                             <input
                                 type="tel"
                                 placeholder="Телефон"
                                 class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            <!-- Submit Button -->
+                           
                             <button
                                 type="button"
                                 @click="window.location.href = 'https://yakutiya.crvsp.ru/'"
@@ -208,11 +170,13 @@
                     </form>
                 </div>
             </div>
-<footer class="w-full py-8 text-center">
+
+
+            <footer class="w-full py-8 text-center">
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <ul class=" flex space-x-3">
+                            <ul class="flex space-x-3">
                                 <li><a href="#" class="hover:text-gray-400">Контакты</a></li>
                                 <li><a href="#" class="hover:text-gray-400">Проекты</a></li>
                                 <li><a href="#" class="hover:text-gray-400">Региональные отделения</a></li>
@@ -232,15 +196,20 @@
 
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { ref } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
+import { type BreadcrumbItem } from '@/types';
 
-const activeFAQ = ref<number | null>(null);
 
-const toggleFAQ = (index: number) => {
-    activeFAQ.value = activeFAQ.value === index ? null : index;
-};
+defineProps<{
+    newsItems: Array<{
+        id: number;
+        title: string;
+        description: string;
+        image: string;
+        author: string;
+        published_at: string;
+    }>;
+}>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -249,7 +218,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-defineProps<{
-    name?: string;
-}>();
+const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU');
+};
 </script>

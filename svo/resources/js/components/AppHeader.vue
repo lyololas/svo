@@ -57,6 +57,10 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Историческая справа',
+        href: '/history',
+    },
+    {
+        title: 'Викторины',
         href: '/quizzes',
     },
     
