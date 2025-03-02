@@ -7,7 +7,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CharityController;
-
+use App\Http\Controllers\NewsController;
 Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
@@ -41,5 +41,8 @@ Route::get('/news', function () {
     return Inertia::render('News/Index');
 })->name('news');
 
+
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::post('/news/{news}/like', [NewsController::class, 'like'])->name('news.like');
 require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';

@@ -7,3 +7,4 @@
 <x-backpack::menu-item title="Shopitems" icon="la la-question" :link="backpack_url('shopitem')" />
 <x-backpack::menu-item title="Charities" icon="la la-question" :link="backpack_url('charity')" />
 <x-backpack::menu-item title="Quizzes" icon="la la-question" :link="backpack_url('quiz')" />
+<x-backpack::menu-item title="News" icon="la la-question" :link="backpack_url('news')" />
